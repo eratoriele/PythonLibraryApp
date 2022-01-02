@@ -1,7 +1,9 @@
 import datetime
+import random
 
 from People.Librarian import *
 from People.LibraryPatron import *
+from Books.Books import *
 
 
 if __name__ == "__main__":
@@ -16,5 +18,10 @@ if __name__ == "__main__":
                        phone_number="503-993-7347",
                        membership=MembershipTypes.FullLife)
 
+    b = Book(name="Homegoing", author="Yaa Gyasi", genre=random.choice(list(BookGenre)),
+             publish_date=datetime.datetime(year=2016, month=1, day=1), position=BookPosition(floor=1, section=1),
+             is_borrowed=False)
+
     print(p.to_string())
     print(p2.to_string())
+    print(b.to_string())
