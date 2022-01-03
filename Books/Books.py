@@ -1,44 +1,45 @@
 import datetime
-import enum
+from enum import Enum
 import random
 from People.Person import Name, Titles
 
 
-class BookGenre(enum.Enum):
-    Biography = "Biography"
-    AutoBiography = "AutoBiography"
-    Action = "Action And Adventure"
-    Dictionary = "Dictionary"
-    Mystery = "Mystery"
-    Satire = "Satire"
-    Fantasy = "Fantasy"
-    Science = "Science"
-    History = "History"
-    Comic = "Comic"
+class BookGenre(Enum):
+    Action = "Action And Adventure", 1
+    AutoBiography = "AutoBiography", 2
+    Biography = "Biography", 3
+    Comic = "Comic", 4
+    Dictionary = "Dictionary", 5
+    Fantasy = "Fantasy", 6
+    History = "History", 7
+    Mystery = "Mystery", 8
+    Satire = "Satire", 9
+    Science = "Science", 10
 
 
 class BookPosition:
-    def __init__(self, floor: int, section: int):
+    def __init__(self, floor: int = None, section: int = None):
         self.floor = floor
         self.section = section
 
 
 class Book:
     def __init__(self, name: str, author: Name, genre: BookGenre, publish_date: datetime,
-                 position: BookPosition, is_borrowed: bool):
+                 position: BookPosition, is_borrowed: bool, borrowed_by=None):
         self.name = name
         self.author = author
         self.genre = genre
         self.publish_date = publish_date
         self.position = position
         self.is_borrowed = is_borrowed
+        self.borrowed_by = borrowed_by
 
     def to_string(self):
-        return_string = self.name + " by " + self.author.to_string() + " in the " + self.genre.value + " genre published in " + \
-                        self.publish_date.strftime("%Y")
+        return_string = self.name + " by " + self.author.to_string() + " in the " + self.genre.value[0] +\
+                        " genre published in " + self.publish_date.strftime("%Y")
 
         if self.is_borrowed:
-            return_string += " is currently borrowed and not available"
+            return_string += " is currently borrowed by " + self.borrowed_by.name.to_string() + " and not available"
         else:
             return_string += " is currently in floor " + str(self.position.floor) + " section " + str(
                 self.position.section)
@@ -69,14 +70,15 @@ def generate_random_books(count):
                            first_name=random.choice(random_author_first_names),
                            middle_name=random.choice(random_author_middle_names),
                            last_name=random.choice(random_author_last_names))
-        # Generate random publish_date
+        # Generate random publish_date, doesn't have to be a legit date, but python wouldn't let me to publish a book
+        # on 31st of February
         publish_date = datetime.date(year=random.randint(1900, 2010),
                                      month=random.randint(1, 12),
                                      day=random.randint(1, 28))
-
+        # Every book is defaulted to non borrowed and positionless during generation
         return_list.append(Book(name=name, author=author_name, genre=random.choice(list(BookGenre)),
                                 publish_date=publish_date,
-                                position=BookPosition(floor=random.randint(0, 4), section=random.randint(1, 12)),
-                                is_borrowed=bool(random.getrandbits(1))))
+                                position=BookPosition(),
+                                is_borrowed=False))
 
     return return_list

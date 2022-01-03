@@ -16,9 +16,9 @@ class WorkHours(Enum):
 
 
 class Librarian(Person):
-    def __init__(self, name: Name, date_of_birth: datetime, phone_number: str,
+    def __init__(self, pid: int, name: Name, date_of_birth: datetime, phone_number: str,
                  position: LibrarianPositions, work_hours: WorkHours):
-        super().__init__(name, date_of_birth, phone_number)
+        super().__init__(pid, name, date_of_birth, phone_number)
         self.position = position
         self.work_hours = work_hours
 
@@ -50,7 +50,7 @@ def generate_random_librarians(count):
         for j in range(count):
             random_phone_number += str(random.randint(0, 9))
 
-        return_list.append(Librarian(name=name, date_of_birth=date_of_birth, phone_number=random_phone_number,
+        return_list.append(Librarian(pid=i + 1, name=name, date_of_birth=date_of_birth, phone_number=random_phone_number,
                                      position=random.choice(list(LibrarianPositions)),
                                      work_hours=random.choice(list(WorkHours))))
 

@@ -29,11 +29,12 @@ class Name:
 
 class Person(ABC):
     @abstractmethod
-    def __init__(self, name: Name, date_of_birth: datetime, phone_number: str):
+    def __init__(self, pid: int, name: Name, date_of_birth: datetime, phone_number: str):
+        self.pid = pid
         self.name = name
         self.date_of_birth = date_of_birth
         self.phone_number = phone_number
 
     @abstractmethod
     def to_string(self):
-        return self.name.to_string() + " " + self.date_of_birth.strftime("%Y/%m/%d")
+        return str(self.pid) + ": " + self.name.to_string() + " " + self.date_of_birth.strftime("%Y/%m/%d")
